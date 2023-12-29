@@ -24,13 +24,19 @@ fn main() -> Result<(), &'static str> {
     let solution = event
         .get_day(day as usize)?
         .ok_or("The solution to that day hasn't been completed")?;
-    // TODO time it.
+
+    // Time it
+    let start = std::time::Instant::now();
 
     let result = solution();
+
+    let end_time = start.elapsed();
+
     println!("The solution to Event: {year}, Day: {day} is");
     let DayResult { star1, star2 } = result;
     println!("Star 1: {star1}");
     println!("Star 2: {star2}");
+    println!("The solution took {end_time:.3?}");
     Ok(())
 }
 
