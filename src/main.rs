@@ -1,5 +1,7 @@
 use std::collections::HashMap;
 
+mod utils;
+
 mod year_2015;
 mod year_2016;
 mod year_2017;
@@ -32,6 +34,8 @@ fn main() -> Result<(), &'static str> {
 
     let end_time = start.elapsed();
 
+    let result = result?;
+
     println!("The solution to Event: {year}, Day: {day} is");
     let DayResult { star1, star2 } = result;
     println!("Star 1: {star1}");
@@ -50,7 +54,7 @@ fn parse_args() -> Result<(u32, u32), &'static str> {
     ))
 }
 
-type Day = &'static dyn Fn() -> DayResult;
+type Day = &'static dyn Fn() -> Result<DayResult, &'static str>;
 
 struct DayResult {
     star1: String,
