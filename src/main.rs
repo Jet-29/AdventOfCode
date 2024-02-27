@@ -27,14 +27,15 @@ fn main() -> Result<(), &'static str> {
         .get_day(day as usize)?
         .ok_or("The solution to that day hasn't been completed")?;
 
+    let puzzle_input: PuzzleInput = utils::load_puzzle_as_chars(&format!("{year}/day{day}"))
+        .or(Err("Failed to find the puzzle file"))?;
+
     // Time it
     let start = std::time::Instant::now();
 
-    let result = solution();
+    let result = solution(puzzle_input);
 
     let end_time = start.elapsed();
-
-    let result = result?;
 
     println!("The solution to Event: {year}, Day: {day} is");
     let DayResult { star1, star2 } = result;
@@ -54,11 +55,27 @@ fn parse_args() -> Result<(u32, u32), &'static str> {
     ))
 }
 
-type Day = &'static dyn Fn() -> Result<DayResult, &'static str>;
+type Day = &'static dyn Fn(PuzzleInput) -> DayResult;
+type PuzzleInput = Vec<Vec<char>>;
 
+#[derive(Default)]
 struct DayResult {
     star1: String,
     star2: String,
+}
+
+impl DayResult {
+    fn new() -> Self {
+        Self::default()
+    }
+
+    fn set_star1(&mut self, solution: String) {
+        self.star1 = solution;
+    }
+
+    fn set_star2(&mut self, solution: String) {
+        self.star2 = solution;
+    }
 }
 
 struct Event {
