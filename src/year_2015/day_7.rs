@@ -51,13 +51,19 @@ pub fn solution(puzzle: PuzzleInput) -> DayResult {
         }
     }
 
-    let a_value = recursive_calculate(&mut instructions, "a");
+    let mut instructions_copy = instructions.clone();
+    let a_value = recursive_calculate(&mut instructions_copy, "a");
+
+    instructions.insert("b", WireInput::Value(a_value));
+    let second_a_value = recursive_calculate(&mut instructions, "a");
 
     let mut result = DayResult::new();
-    result.set_star2(a_value.to_string());
+    result.set_star1(a_value.to_string());
+    result.set_star2(second_a_value.to_string());
     result
 }
 
+#[derive(Clone)]
 enum WireInput<'a> {
     RShift(&'a str, &'a str),
     LShift(&'a str, &'a str),
