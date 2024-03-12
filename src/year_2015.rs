@@ -7,6 +7,7 @@ mod day_4;
 mod day_5;
 mod day_6;
 mod day_7;
+mod day_8;
 
 pub fn get_event() -> Event {
     let solutions = [
@@ -17,6 +18,7 @@ pub fn get_event() -> Event {
         &day_5::solution as Day,
         &day_6::solution as Day,
         &day_7::solution as Day,
+        &day_8::solution as Day,
     ];
 
     let mut days = [None; 25];
