@@ -1,21 +1,11 @@
 use std::collections::HashMap;
-
+use util_macros::get_solutions;
 mod utils;
 
-mod year_2015;
-mod year_2016;
-mod year_2017;
-mod year_2018;
-mod year_2019;
-mod year_2020;
-mod year_2021;
-mod year_2022;
-mod year_2023;
-
 fn main() -> Result<(), &'static str> {
-    // Grab all solutions
-    let mut solutions: HashMap<u32, Event> = HashMap::new();
-    solutions.insert(2015, year_2015::get_event());
+    get_solutions!();
+
+    println!("{}", solutions.len());
 
     let (year, day) = parse_args()?;
     println!("You chose year {year}, puzzle {day}");
@@ -24,7 +14,7 @@ fn main() -> Result<(), &'static str> {
         .ok_or("The solutions for that event have not been completed")?;
 
     let solution = event
-        .get_day(day as usize)?
+        .get_day(day)
         .ok_or("The solution to that day hasn't been completed")?;
 
     let puzzle_input: PuzzleInput = utils::load_puzzle_as_chars(&format!("{year}/day{day}"))
@@ -79,15 +69,11 @@ impl DayResult {
 }
 
 struct Event {
-    days: [Option<Day>; 25],
+    days: HashMap<u32, Day>,
 }
 
 impl Event {
-    fn get_day(&self, day: usize) -> Result<Option<Day>, &'static str> {
-        if day == 0 || day > 25 {
-            Err("The day entered must be 1-25")
-        } else {
-            Ok(self.days[day - 1])
-        }
+    fn get_day(&self, day: u32) -> Option<&Day> {
+        self.days.get(&day)
     }
 }

@@ -1,6 +1,8 @@
+workspace = { members = ["util_macros"] }
 [package]
 name = "advent_of_code"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+util_macros = { path = "util_macros" }
